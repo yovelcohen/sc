@@ -3,7 +3,7 @@ from datetime import date
 from django.db import models
 
 from common.base.exceptions import ContractExpirationDateError
-from common.base.models import BaseGeoLocation
+from common.base.models import BaseGeoLocation, ScrBaseSiteModel  # noqa
 from common.dates.consts import TODAY
 
 
@@ -33,3 +33,7 @@ class Account(models.Model):
             pass
         pass
         super().save(*args, **kwargs)
+
+
+class {{cookiecutter.main_entity_name}}(ScrBaseSiteModel):  # noqa
+    pass

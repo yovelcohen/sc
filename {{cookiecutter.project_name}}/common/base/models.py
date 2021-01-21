@@ -2,15 +2,16 @@
 BASE SCR MODELS
 all models are abstract and should be inherited, as we don't want to direct access to this file
 """
-from base.consts import COUNTRIES_CHOICES, EMAIL, EMAIL_ADDRESS, EN
-from base_scr.base_user_manager import SiteUserManager
-from base_scr.consts import RelatedNames
 from django.conf.global_settings import LANGUAGES
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
+
+from common.base.managers import SiteUserManager
+from common.consts import COUNTRIES_CHOICES, EMAIL, EMAIL_ADDRESS, EN
+from common.consts import RelatedNames
 
 phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
                              message="Phone number must be entered in the format: '+999999999'."
@@ -49,8 +50,9 @@ class ScrBaseSiteModel(models.Model):
     """
     represents the highest level in the config, usually named farm or site
     """
-    id = models.CharField(max_length=20, primary_key=True, verbose_name='Farm Id')
-    name = models.CharField(max_length=255, verbose_name='Farm Name')
+    id = models.CharField(max_length=20, primary_key=True,
+                          verbose_name='{{cookiecutter.main_entity_name}} Id'.capitalize())
+    name = models.CharField(max_length=255, verbose_name='{{cookiecutter.main_entity_name}} Name'.capitalize())
     location = models.ForeignKey('GeoLocation', on_delete=models.DO_NOTHING, null=True, blank=True,
                                  related_name=RelatedNames.LOCATION)
     active = models.BooleanField(default=True)

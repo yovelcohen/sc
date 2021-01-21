@@ -2,6 +2,8 @@
   "project_name": "My Awesome Project",
   "project_slug_name": "Slug Name",
   "add_file_logger": "n",
-  "configure_bitbucket_pipeline": "y"
+  "add_tests_to_pipeline": "y",
+  "add_run_migrations_to_pipeline": "y",
+  "main_entity_name": "usually called farm or site, represent the highest level in the app"
 }
 

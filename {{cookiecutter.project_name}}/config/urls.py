@@ -3,9 +3,9 @@ from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView
 
-from base.base_objects import PermittedSwagger, PermittedReDoc
+from api.admin import consumer_admin
+from common.base.views import PermittedSwagger, PermittedReDoc
 from config.config import SILK
-from consumer_api.admin import consumer_admin
 
 admin.autodiscover()
 admin.site.enable_nav_sidebar = False
