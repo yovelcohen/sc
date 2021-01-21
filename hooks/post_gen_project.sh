@@ -1,4 +1,6 @@
 #!/bin/sh
+pip install -r requirements.txt
+
 echo "Export DataPlatform Token"
 export PATH="Basic MG9hNjEwaHRqN25kSldpMkszNTc6U3lIa2FEejQ4WGIySFVyd1lURTBvb0NLVlJ5ZmVlZnViRExlZzctRw=="
 echo "Export DataPlatform Token done!"
