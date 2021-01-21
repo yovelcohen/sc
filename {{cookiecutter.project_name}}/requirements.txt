@@ -18,5 +18,5 @@ django-singleton-admin-2
 django-better-admin-arrayfield
 django-admin-numeric-filter
 bpython # currently, Ipython has got a bug
-silk
+django-silk
 cookiecutter
