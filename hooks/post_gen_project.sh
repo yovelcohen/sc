@@ -12,3 +12,4 @@ export SILK='True'
 echo "Export local Silk settings set to true done!"
 
 rm bitbucket-pipelines.yml
+exit

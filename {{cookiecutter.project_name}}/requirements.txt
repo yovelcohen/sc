@@ -17,6 +17,6 @@ gunicorn==20.0.4
 django-singleton-admin-2
 django-better-admin-arrayfield
 django-admin-numeric-filter
-bpython # currently, Ipython has got a bug
+bpython # currently, Ipython has a bug
 django-silk
 cookiecutter
