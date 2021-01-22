@@ -1,5 +1,7 @@
 import requests
 
+from common.consts import ACCESS_TOKEN
+
 BASE_API_URL = 'https://sds-livestock-data-api-dev.scrdairy.com/api'
 FARMS = 'farms'
 
@@ -41,3 +43,17 @@ def get_zoura_auth_token():
 
     response = requests.request('POST', url, headers=headers, data=payload)
     return response.json()
+
+
+class TokenTypes:
+    ZOURA = 'ZOURA'
+    DATA_PLATFORM = 'data_platform'
+
+
+class GetAuthTokenFactory:
+    _resources = {TokenTypes.ZOURA: get_zoura_auth_token()[ACCESS_TOKEN],
+                  TokenTypes.DATA_PLATFORM: get_data_platform_auth_token()[ACCESS_TOKEN]}
+
+    @classmethod
+    def get_auth_token(cls, resource):
+        return cls._resources[resource]
