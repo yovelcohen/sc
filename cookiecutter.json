@@ -4,6 +4,10 @@
   "add_file_logger": "n",
   "add_tests_to_pipeline": "y",
   "add_run_migrations_to_pipeline": "y",
-  "main_entity_name": "usually called farm or site, represent the highest level in the app"
+  "main_entity_name": "usually called farm or site, represent the highest level in the app",
+  "async_or_sync_deployment": [
+    "async",
+    "sync"
+  ]
 }
 

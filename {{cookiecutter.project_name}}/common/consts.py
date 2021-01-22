@@ -130,4 +130,6 @@ DISCONNECTED = 'Disconnected'
 
 
 class RelatedNames:
+    AUTH_TOKEN = 'auth_token'
+    LOCATION = 'location'
     ACCOUNT_USERS = 'account_users'

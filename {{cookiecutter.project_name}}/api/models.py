@@ -33,7 +33,3 @@ class Account(models.Model):
             pass
         pass
         super().save(*args, **kwargs)
-
-
-class {{cookiecutter.main_entity_name}}(ScrBaseSiteModel):  # noqa
-    pass
