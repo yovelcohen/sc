@@ -5,14 +5,14 @@ from rest_framework.response import Response
 from account_management_api.models import HasSalesForceApiKey
 from account_management_api.serializers import (CreateUpdateAccountsSerializer)
 from api.models import Account
-from common.base.views import DestroyUpdateCreateView
+from common.base.views import DestroyUpdateCreateViewScr
 from common.consts import CONTRACT_EXPIRATION_DATE
 from common.consts import ID
 from common.dates.utils import convert_str_to_date
 from common.utils.utils import get_all_accounts
 
 
-class AccountsView(DestroyUpdateCreateView):
+class AccountsView(DestroyUpdateCreateViewScr):
     """
     Create, Update or Delete an Farm/Site using it's ID
     """

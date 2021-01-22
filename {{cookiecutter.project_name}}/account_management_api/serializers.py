@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from base_scr.common.consts import *
-from consumer_api.models import Account, Farm
+from api.models import Account, Farm
+from common.consts import *
 
 
 class CreateUpdateFarmsSerializer(serializers.ModelSerializer):

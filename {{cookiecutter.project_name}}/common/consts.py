@@ -117,6 +117,7 @@ TELEMETRIES = 'telemetries'
 DEVICES = 'devices'
 SITES = 'sites'
 ACCOUNTS = 'accounts'
+FARMS = 'farms'
 SITE_DEVICES = 'devices'
 ACCOUNTS_IDS = 'account_ids'
 EXPIRATION_END_DATE = 'expiration_end_date'
@@ -139,3 +140,4 @@ POPULATION = 'population'
 
 class RelatedNames:
     ACCOUNT_USERS = 'account_users'
+    LOCATION = 'location'

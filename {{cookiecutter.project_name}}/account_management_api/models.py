@@ -3,8 +3,8 @@ from django.db import models
 from rest_framework_api_key.models import AbstractAPIKey
 from rest_framework_api_key.permissions import BaseHasAPIKey
 
-from base.consts import DATE
-from base.dates.consts import TODAY
+from common.consts import DATE
+from common.dates.consts import TODAY
 
 
 class UsageReports(models.Model):

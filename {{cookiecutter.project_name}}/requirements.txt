@@ -18,5 +18,6 @@ django-singleton-admin-2
 django-better-admin-arrayfield
 django-admin-numeric-filter
 bpython # currently, Ipython has a bug
+model_mommy
 django-silk
 cookiecutter

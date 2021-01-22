@@ -24,7 +24,6 @@ installed_apps = ('django.contrib.admin',
                   'api.apps.ConsumerApiConfig',
                   'users',
                   'account_management_api',
-                  'configurations',
                   'drf_spectacular'
                   )
 

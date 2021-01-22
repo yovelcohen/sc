@@ -1,4 +1,9 @@
-from rest_framework.mixins import UpdateModelMixin, CreateModelMixin
+from drf_spectacular.views import SpectacularSwaggerView, SpectacularRedocView
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.mixins import (UpdateModelMixin, CreateModelMixin, DestroyModelMixin,
+                                   RetrieveModelMixin, ListModelMixin)
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import GenericViewSet
 
 
 class PermittedSwagger(SpectacularSwaggerView):
@@ -12,36 +17,36 @@ class PermittedReDoc(SpectacularRedocView):
     permission_classes = []
 
 
-class BaseGenericViewSet(GenericViewSet):
+class BaseScrGenericViewSet(GenericViewSet):
     """
     Base Traceability Dashboard API View
     extends the built in Generic View Set to supply generic behaviour across the config
     every view should inherit this class or any of it's extensions
     """
-    authentication_classes = [TokenAuthentication, ]
-    permissions_classes = [IsAuthenticated, ]
+    authentication_classes = (TokenAuthentication,)
+    permissions_classes = (IsAuthenticated,)
     serializer_class = NotImplementedError
 
 
-class CreateView(CreateModelMixin, BaseGenericViewSet):
+class CreateViewScr(CreateModelMixin, BaseScrGenericViewSet):
     """
     A custom View which can only receive POST and PUT methods.
     """
     pass
 
 
-class DestroyUpdateCreateView(DestroyModelMixin,
-                              CreateModelMixin,
-                              UpdateModelMixin,
-                              BaseGenericViewSet):
+class DestroyUpdateCreateViewScr(DestroyModelMixin,
+                                 CreateModelMixin,
+                                 UpdateModelMixin,
+                                 BaseScrGenericViewSet):
     """
     A custom view which can only receive POST, PUT and Delete methods.
     """
     pass
 
 
-class ListViewSet(ListModelMixin,
-                  BaseGenericViewSet):
+class ListViewSetScr(ListModelMixin,
+                     BaseScrGenericViewSet):
     """
     A custom View which can only receive get request.
     """
@@ -49,43 +54,43 @@ class ListViewSet(ListModelMixin,
     pass
 
 
-class BaseModelViewSet(CreateModelMixin,
-                       RetrieveModelMixin,
-                       UpdateModelMixin,
-                       DestroyModelMixin,
-                       ListModelMixin,
-                       BaseGenericViewSet):
+class BaseScrModelViewSet(CreateModelMixin,
+                          RetrieveModelMixin,
+                          UpdateModelMixin,
+                          DestroyModelMixin,
+                          ListModelMixin,
+                          BaseScrGenericViewSet):
     """
     exactly the same behaviour as a the builtin Model View Set, expects it inherits the config's extended Generic View Set
     """
     pass
 
 
-class ScrBaseView(BaseGenericViewSet):
+class ScrBaseScrView(BaseScrGenericViewSet):
 
     def get_queryset(self):
         raise NotImplementedError
 
 
-class ScrListViewSet(ListViewSet, ScrBaseView):
+class ScrListViewSet(ListViewSetScr, ScrBaseScrView):
     pass
 
 
-class ScrCreateViewSet(CreateView, UpdateModelMixin, ScrBaseView):
+class ScrCreateViewSet(CreateViewScr, UpdateModelMixin, ScrBaseScrView):
     pass
 
 
-class ScrUpdateViewSet(UpdateModelMixin, ScrBaseView):
+class ScrUpdateViewSet(UpdateModelMixin, ScrBaseScrView):
     pass
 
 
-class ScrListUpdateViewSet(UpdateModelMixin, ListViewSet, ScrBaseView):
+class ScrListUpdateViewSet(UpdateModelMixin, ListViewSetScr, ScrBaseScrView):
     pass
 
 
-class ScrModelViewSet(BaseModelViewSet, ScrBaseView):
+class ScrModelViewSet(BaseScrModelViewSet, ScrBaseScrView):
     pass
 
 
-class ScrCreateUpdateViewSet(CreateModelMixin, UpdateModelMixin, ScrBaseView):
+class ScrCreateUpdateViewSet(CreateModelMixin, UpdateModelMixin, ScrBaseScrView):
     pass
