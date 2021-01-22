@@ -78,3 +78,10 @@ def get_first_day_of_the_quarter(date):
 def dates_list_generator(start, days):
     for x in range(days):
         yield start + timedelta(days=x)
+
+
+def get_mock_df(name, name_field, fields, dates_list):
+    import pandas as pd
+    fields = {field: 0 for field in fields}
+    df = pd.DataFrame({'date': dates_list, name_field: name, **fields})
+    return df

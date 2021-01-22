@@ -1,9 +1,4 @@
-from drf_spectacular.views import SpectacularSwaggerView, SpectacularRedocView
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.mixins import (UpdateModelMixin, CreateModelMixin, DestroyModelMixin, ListModelMixin,
-                                   RetrieveModelMixin)
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.viewsets import GenericViewSet
+from rest_framework.mixins import UpdateModelMixin, CreateModelMixin
 
 
 class PermittedSwagger(SpectacularSwaggerView):

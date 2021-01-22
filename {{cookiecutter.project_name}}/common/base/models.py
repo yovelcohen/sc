@@ -33,7 +33,6 @@ class BaseGeoLocation(models.Model):
 
     class Meta:
         abstract = True
-        db_table = 'geo_locations'
 
     def __str__(self):
         return f'{self.latitude}/{self.longitude}' if \
@@ -50,9 +49,8 @@ class ScrBaseSiteModel(models.Model):
     """
     represents the highest level in the config, usually named farm or site
     """
-    id = models.CharField(max_length=20, primary_key=True,
-                          verbose_name='{{cookiecutter.main_entity_name}} Id'.capitalize())
-    name = models.CharField(max_length=255, verbose_name='{{cookiecutter.main_entity_name}} Name'.capitalize())
+    id = models.CharField(max_length=20, primary_key=True, verbose_name='Farm Id')
+    name = models.CharField(max_length=255, verbose_name='Farm Name')
     location = models.ForeignKey('GeoLocation', on_delete=models.DO_NOTHING, null=True, blank=True,
                                  related_name=RelatedNames.LOCATION)
     active = models.BooleanField(default=True)
@@ -106,7 +104,7 @@ class BaseScrScores(models.Model):
     validate score type Base on ranges provided
     """
     date = models.DateField(default=now)
-
+    cow_count = models.SmallIntegerField(default=0)
     objects = models.Manager()
 
     class Meta:

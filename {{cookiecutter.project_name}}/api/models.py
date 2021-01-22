@@ -3,12 +3,13 @@ from datetime import date
 from django.db import models
 
 from common.base.exceptions import ContractExpirationDateError
-from common.base.models import BaseGeoLocation, ScrBaseSiteModel  # noqa
+from common.base.models import BaseGeoLocation, ScrBaseSiteModel, BaseScrScores
 from common.dates.consts import TODAY
 
 
 class GeoLocation(BaseGeoLocation):
-    pass
+    class Meta:
+        db_table = 'geo_locations'
 
 
 class Account(models.Model):
@@ -23,6 +24,9 @@ class Account(models.Model):
 
     objects = models.Manager()
 
+    class Meta:
+        db_table = 'accounts'
+
     def __str__(self):
         return self.name
 
@@ -33,3 +37,21 @@ class Account(models.Model):
             pass
         pass
         super().save(*args, **kwargs)
+
+
+class Farm(ScrBaseSiteModel):
+    """
+    This is Mock class, it might be named farm or site, depending on the project
+    """
+
+    class Meta:
+        abstract = True
+
+
+class FarmScores(BaseScrScores):
+    """
+    Another Mock class for the example
+    """
+
+    class Meta:
+        abstract = True

@@ -1,3 +1,8 @@
+"""
+The front end uses a certain library for graphs and tables plotting.
+this class along with the TablesBuilder object are used to get the data, filter and format as easily as we can
+and also export it to CSV.
+"""
 import pandas as pd
 from django.db.models import Prefetch
 from drf_spectacular.utils import extend_schema
@@ -5,26 +10,21 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from base.base_exceptions import (FarmIdNotSupplied, LevelIsMissingException, TableIdNotProvided,
-                                  LevelMaxAllowedItemsError, IdsNotProvided, GroupNotFound, BranchNotFound)
-from base.consts import TABLE, TABLE_NAME
-from base.dates.consts import TWO_DAYS_AGO
-from base.dates.request_handler import request_dates_handler
-from base.dates.utils import construct_dates_dict
-from base.tables import TablesBuilder, tables_builder
-from base_scr.base_views import ScrListViewSet
-from base_scr.common.consts import ID, FARM, BRANCH, LEVEL, FARM_ID, RelatedNames, GROUP, DATE, NAME, MILKING, SYSTEM_KEY, \
-    POPULATION
-from common.consts import FARM__ACCOUNT
-from common.docs import STATS_DOCS, DocsParams, EXPORT_TO_CSV_DOCS, FARM_REQUEST, FARM_RESPONSE
-from common.utils import get_mock_df
-from consumer_api.models import Farm, GroupKPIs, BranchKPIs, FarmKPIs, Branch, Group
-from consumer_api.serializers.graphs_serializers import GraphsSerializer, CSV_EXPORT, StatesRequestSerializer
-from users.models import UserSelectedKPIs
+from api.models import Farm, FarmScores
+from common.base.exceptions import (FarmIdNotSupplied, LevelIsMissingException, TableIdNotProvided,
+                                    LevelMaxAllowedItemsError, IdsNotProvided, GroupNotFound)
+from common.base.views import ScrListViewSet
+from common.consts import (ID, FARM, BRANCH, LEVEL, FARM_ID, RelatedNames, GROUP, DATE, NAME,
+                           SYSTEM_KEY, POPULATION, TABLE, TABLE_NAME)
+from common.dates.consts import TWO_DAYS_AGO
+from common.dates.request_handler import request_dates_handler
+from common.dates.utils import construct_dates_dict, get_mock_df
+from common.docs import STATS_DOCS, DocsParams, EXPORT_TO_CSV_DOCS, CSV_EXPORT
+from common.tables import TablesBuilder, tables_builder
 
 
 class GraphsView(ScrListViewSet):
-    serializer_class = GraphsSerializer
+    serializer_class = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -32,26 +32,19 @@ class GraphsView(ScrListViewSet):
         self._graph_builder: TablesBuilder = None  # noqa
 
     @property
-    def kpis(self):
-        selected_kpis: UserSelectedKPIs = UserSelectedKPIs.objects.get(user=self.request.user)
-        self._kpis: UserSelectedKPIs = selected_kpis
-        return self._kpis
-
-    @property
     def graph_builder(self):
         # set the dates filtering
-        kpis_names_list = self.kpis.get_kpis_names_list()
+        kpis_names_list = []  # in some applications it's dynamic in some it's static
         return tables_builder({kpi: [DATE, kpi] for kpi in kpis_names_list}, days=self.days, end_date=self.end_date)
 
     @extend_schema(description='get a list of all farms associated with the user and their branches and groups',
-                   summary='Groups And Branches By Farms', parameters=[DocsParams.META_FARM_ID],
-                   request=FARM_REQUEST, responses=FARM_RESPONSE)
+                   summary='Groups And Branches By Farms', parameters=[DocsParams.META_FARM_ID])
     def list(self, request, *args, **kwargs):
         farm_id = request.query_params.get(FARM_ID, None)
         if farm_id is None:
             raise FarmIdNotSupplied
         else:
-            queryset = Farm.objects.get(account__account_users=self.request.user, id=farm_id)
+            queryset = Farm.objects.get(user__in=self.request.user, id=farm_id)
             serializer = self.get_serializer(queryset, many=False)
             return Response(data=serializer.data, status=status.HTTP_200_OK)
 
@@ -74,46 +67,19 @@ class GraphsView(ScrListViewSet):
         if self.level == FARM:
             return Farm.objects.filter(account__account_users=self.request.user, id__in=self.farm_ids). \
                 prefetch_related(Prefetch(lookup=RelatedNames.FARM_SCORES,
-                                          queryset=FarmKPIs.objects.filter(date__range=self.dates_range).
-                                          order_by('-date')),
+                                          queryset=FarmScores.objects.filter(date__range=self.dates_range)),
                                  ).only(NAME, ID, SYSTEM_KEY)
 
         else:
             if len(self.farm_ids) > 1:
                 raise LevelMaxAllowedItemsError
-
+            # used if there's another levels in the app (groups/ branches...)
             self.ids = self.request.query_params.get(ID, None)
             if self.ids is None:
                 raise IdsNotProvided
             self.ids = self.ids.split(',')
 
-            if self.level == BRANCH:
-                qs = Branch.objects.filter(farm__id=self.farm_ids[0], id__in=self.ids). \
-                    select_related(FARM, FARM__ACCOUNT). \
-                    prefetch_related(Prefetch(lookup=RelatedNames.BRANCH_SCORES,
-                                              queryset=BranchKPIs.objects.filter(date__range=self.dates_range).
-                                              order_by('-date')
-                                              ),
-                                     ).defer(MILKING)
-                if not qs.exists():
-                    raise BranchNotFound
-                return qs
-            elif self.level == GROUP:
-                qs = Group.objects.filter(branch__farm__id=self.farm_ids[0], group_number__in=self.ids). \
-                    select_related(BRANCH, 'branch__farm'). \
-                    prefetch_related(Prefetch(lookup=RelatedNames.GROUPS_SCORES,
-                                              queryset=GroupKPIs.objects.filter(date__range=self.dates_range).
-                                              order_by('-date'),
-                                              )
-                                     )
-                if not qs.exists():
-                    raise GroupNotFound
-                return qs
-
-            else:
-                raise LevelIsMissingException
-
-    @extend_schema(summary='Graphs Data', description=STATS_DOCS, responses=StatesRequestSerializer,
+    @extend_schema(summary='Graphs Data', description=STATS_DOCS,
                    parameters=[DocsParams.ID, DocsParams.LEVEL, DocsParams.START_DATE, DocsParams.END_DATE,
                                DocsParams.FARM_ID, DocsParams.TABLE_NAME])
     @action(detail=False)
@@ -157,6 +123,7 @@ class GraphsView(ScrListViewSet):
             if level == FARM:
                 return self._farms_level_constructor(query=query, as_exporter=as_exporter, table=table_id,
                                                      table_name=table_name)
+            # Example use
             elif level == BRANCH:
                 return self._branches_level_constructor(query=query, as_exporter=as_exporter, table_name=table_name)
 
@@ -183,7 +150,7 @@ class GraphsView(ScrListViewSet):
             tables_names = [table_name] if table_name is not None else list(self.graph_builder.graphs.keys())
             name_field = 'farm__name'
 
-            dfs = [pd.DataFrame(farm.farm_scores.all().values(DATE, *tables_names, name_field))
+            dfs = [pd.DataFrame(farm.farm_scores.values(DATE, *tables_names, name_field))
                    if farm.farm_scores.all().exists() is True
                    else get_mock_df(name_field=name_field, name=farm.name, fields=tables_names,
                                     dates_list=construct_dates_dict(days=self.days, end_date=self.end_date))

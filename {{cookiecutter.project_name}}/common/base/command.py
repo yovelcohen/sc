@@ -2,9 +2,9 @@ from datetime import timedelta
 
 from django.core.management import BaseCommand
 
-from base.dates.consts import TODAY, END_DATE, FROM_DATE
-from base.dates.utils import convert_str_to_date
-from base_scr.consts import FARM
+from common.dates.consts import TODAY, END_DATE, FROM_DATE
+from common.dates.utils import convert_str_to_date
+from common.consts import FARM
 
 
 class ScrBaseCommand(BaseCommand):

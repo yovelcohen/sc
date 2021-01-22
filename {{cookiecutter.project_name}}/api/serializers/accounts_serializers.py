@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from base.consts import ALL_FIELDS
-from consumer_api.models import Account
+from api.models import Account
+from common.consts import ALL_FIELDS
 
 
 class AccountSerializer(serializers.ModelSerializer):

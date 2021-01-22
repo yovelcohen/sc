@@ -10,7 +10,7 @@ created in Sales Force.
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from api.models import Farm
+from common.base.models import ScrBaseSiteModel
 from common.consts import ACCESS_TOKEN
 from common.dates.consts import TWO_YEARS_AGO, TWO_DAYS_AGO
 from data.ETLs.Factory.Flows import ETLFlows
@@ -18,7 +18,7 @@ from data.ETLs.Runner import ETLRunner
 from data.Resources import get_data_platform_auth_token
 
 
-@receiver(post_save, sender=Farm)
+@receiver(post_save, sender=ScrBaseSiteModel)  # This is a placeholder, it's and abstract model!
 def get_farm_historic_kpis(sender, instance, created, **kwargs):
     token = get_data_platform_auth_token()[ACCESS_TOKEN]
     if created:
