@@ -1,4 +1,4 @@
-{% if cookiecutter.add_run_migrations_to_pipeline == "y" %}
+{% if cookiecutter.add_the_migrate_command_to_pipeline == "y" %}
 release: python manage.py migrate
 {% endif %}
 {% if cookiecutter.async_or_sync_deployment == "sync" %}
