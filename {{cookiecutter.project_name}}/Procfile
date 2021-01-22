@@ -1,4 +1,4 @@
-{% if cookiecutter.async_or_sync_deployment == sync %}
+{% if cookiecutter.async_or_sync_deployment == "sync" %}
     web: gunicorn {{ cookiecutter.project_name }}.wsgi:application --log-file -
 {% else %}
     web: bin/start-pgbouncer daphne {{ cookiecutter.project_name }}.asgi:application --port $PORT --bind 0.0.0.0 -v2
