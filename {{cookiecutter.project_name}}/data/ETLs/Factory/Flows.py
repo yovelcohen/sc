@@ -1,2 +1,2 @@
 class ETLFlows:
-    pass
+    ZOURA_BILLING = 'zoura_billing'
