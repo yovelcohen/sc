@@ -13,18 +13,18 @@ class LocationAdmin(ModelAdmin):
 
 
 class TokenAdmin(ModelAdmin):
-    list_display = [USER, KEY, CREATED]
+    list_display = (USER, KEY, CREATED)
+    readonly_fields = (USER, KEY, CREATED)
 
 
 class UsersAdmin(ModelAdmin):
-    fields = [EMAIL, FIRST_NAME, LAST_NAME, ACCOUNT, LANGUAGE, IS_ADMIN, IS_ACTIVE]
+    fields = (EMAIL, FIRST_NAME, LAST_NAME, ACCOUNT, LANGUAGE, IS_ADMIN, IS_ACTIVE)
     list_display = fields
 
 
 class AccountAdmin(ModelAdmin):
-    fields = (ID, NAME, CONTRACT_EXPIRATION_DATE, ZOURA_BILLING_ID, ZOURA_SUBSCRIPTION_ID, HAS_EXPIRED)
+    fields = (ID, NAME, CONTRACT_EXPIRATION_DATE, ZOURA_BILLING_ID, ZOURA_SUBSCRIPTION_ID)
     list_display = fields
-    readonly_fields = (HAS_EXPIRED,)
     search_fields = (NAME, ID)
 
 

@@ -149,7 +149,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'tracibilty-debug.log',
+            'filename': '{{cookiecutter.add_file_logger}}-debug.log',
         },
         'console': {
             'class': 'logging.StreamHandler',
@@ -159,7 +159,7 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'file'],
+            'handlers': handlers,
             'level': 'INFO',
             'propagate': False,
         },

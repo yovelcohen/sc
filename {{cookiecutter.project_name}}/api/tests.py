@@ -1,9 +1,9 @@
 import django
+
+django.setup()  # for pycharm debugging
 from django.test import TestCase
 
 from api.models import Account
-
-django.setup()  # for pycharm debugging
 
 
 class SignalTests(TestCase):
