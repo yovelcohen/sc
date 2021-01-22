@@ -1,0 +1,21 @@
+{
+  "project_name": "scr_demo_project",
+  "project_slug_name": "slug_project_name",
+  "add_file_logger": [
+    "y",
+    "n"
+  ],
+  "add_tests_to_pipeline": [
+    "y",
+    "n"
+  ],
+  "add_the_migrate_command_to_pipeline": [
+    "y",
+    "n"
+  ],
+  "async_or_sync_deployment": [
+    "async",
+    "sync"
+  ]
+}
+
