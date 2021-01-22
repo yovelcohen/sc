@@ -1,6 +1,6 @@
-from base_scr.data_platform_handler.utils import ZOURA
-from common.base_ald_command import BaseALDCommand
+from common.consts import ZOURA
+from common.base.command import ScrBaseCommand
 
 
-class Command(BaseALDCommand):
+class Command(ScrBaseCommand):
     token_type = ZOURA
