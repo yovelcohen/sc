@@ -1,7 +1,0 @@
-<application>
-  <component name="FindSettings">
-    <option name="customScope" value="Directory '.../base-scr-be/scr_cookiecutter/{{cookiecutter.project_name}}'" />
-    <option name="defaultScopeName" value="Directory '.../base-scr-be/scr_cookiecutter/{{cookiecutter.project_name}}'" />
-    <option name="SEARCH_SCOPE" value="Directory '.../base-scr-be/scr_cookiecutter/{{cookiecutter.project_name}}'" />
-  </component>
-</application>
