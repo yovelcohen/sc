@@ -1,6 +1,6 @@
 {
-  "project_name": "Scr Demo Project",
-  "project_slug_name": "Slug Name",
+  "project_name": "scr_demo_project",
+  "project_slug_name": "slug_project_name",
   "add_file_logger": [
     "y",
     "n"
