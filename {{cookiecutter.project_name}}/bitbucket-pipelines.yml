@@ -1,0 +1,11 @@
+image: python:3.7.9
+
+pipelines:
+  default:
+    - parallel:
+        - step:
+            name: Deploy
+            caches:
+              - pip
+            script:
+              - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/{{cookiecutter.project_name}}.git HEAD

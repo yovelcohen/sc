@@ -1,0 +1,11 @@
+{% if cookiecutter.add_the_migrate_command_to_pipeline == "y" %}
+release: python manage.py migrate
+{% endif %}
+{% if cookiecutter.async_or_sync_deployment == "sync" %}
+web: gunicorn {{ cookiecutter.project_name }}.wsgi:application --log-file -
+{% else %}
+web: bin/start-pgbouncer daphne {{ cookiecutter.project_name }}.asgi:application --port $PORT --bind 0.0.0.0 -v2
+worker: python manage.py runworker channel_layer -v2
+{% endif %}
+
+
