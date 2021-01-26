@@ -5,6 +5,7 @@
       <mapping pattern="Procfile" type="AUTO_DETECTED" />
       <mapping ext="html " type="XHTML" />
       <removed_mapping ext="txt" approved="true" type="PLAIN_TEXT" />
+      <removed_mapping pattern=".env" approved="true" type="PLAIN_TEXT" />
     </extensionMap>
   </component>
 </application>
