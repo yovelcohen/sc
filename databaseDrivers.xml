@@ -3,5 +3,8 @@
     <driver id="postgresql" dialect="Snowflake">
       <artifact id="PostgreSQL" name="PostgreSQL" use="true" version="42.2.5" />
     </driver>
+    <driver id="snowflake">
+      <artifact id="Snowflake" name="Snowflake" use="true" version="3.13.0" />
+    </driver>
   </component>
 </application>
