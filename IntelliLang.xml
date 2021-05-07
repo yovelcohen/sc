@@ -1,0 +1,7 @@
+<application>
+  <component name="LanguageInjectionConfiguration">
+    <injection language="PostgreSQL" injector-id="sql" pattern="coalesce" enabled="true">
+      <display-name>coalesce</display-name>
+    </injection>
+  </component>
+</application>
